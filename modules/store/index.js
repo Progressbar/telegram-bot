@@ -32,16 +32,19 @@ module.exports = {
   help,
   trigger({ params }, { from }) {
     const [actionString, property, value] = params;
-    const actionStringLowercase = actionString.toLowercase();
 
-    const action = actions.find(({ commands: actionCommands }) => {
-      return actionCommands.includes(actionStringLowercase);
-    });
+    if (!actionString || !property) {
+      return 'Uhm, check your syntax: `help store`';
+    }
+
+    const actionStringLowercase = actionString.toLowerCase();
+
+    const action = actions.find(({ commands: actionCommands }) => actionCommands.includes(actionStringLowercase));
 
     if (action) {
       return action.fn({ user: from.id, property, value }).msgOutput;
     }
     return 'store: couldn\'t find your action :/';
   },
-  store
+  store,
 };
