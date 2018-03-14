@@ -1,0 +1,29 @@
+{
+  "name": "telegram-bot",
+  "version": "1.0.0",
+  "description": "bot for telegram - open doors, set msg-bar",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Progressbar/telegram-bot.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Progressbar/telegram-bot/issues"
+  },
+  "homepage": "https://github.com/Progressbar/telegram-bot#readme",
+  "dependencies": {
+    "telegraf": "^3.19.0"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}

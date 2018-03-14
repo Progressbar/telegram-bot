@@ -1,3 +1,7 @@
+# custom
+env.js
+store.db
+
 # Logs
 logs
 *.log
