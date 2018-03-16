@@ -1,4 +1,5 @@
 const store = require('./store');
+const { commandInitiator } = require('./../../env');
 
 const commands = [
   'store',
@@ -9,26 +10,41 @@ const actions = [
   {
     commands: ['s', 'set'],
     fn: store.set,
-    help: '',
+    help: `assigns a value to a property in the store.\nsyntax: \`${commandInitiator}store set <property> <value>\``,
   },
   {
     commands: ['g', 'get'],
     fn: store.get,
+    help: `prints a property from the store.\nsyntax: ${commandInitiator}store get <property>`,
   },
   {
     commands: ['d', 'del', 'delete'],
     fn: store.delete,
+    help: `removes a property from the store.\nsyntax: ${commandInitiator}store delete <property>`,
   },
 ];
 
-const help = `${commands.join(', ')}
-
+const help = `
 ${actions.map(({ commands: actionCommands, help: actionHelp }) =>
-    `${actionCommands.join(', ').padEnd(20, ' ')}-- ${actionHelp}`)}
+    `${actionCommands.join(', ').padEnd(20, ' ')}\n  ${actionHelp.split('\n').join('\n  ')}`
+  ).join('\n')}
+
+example: to set your token, use:
+
+  ${commandInitiator}store set token myToken
+
+and then you'll be able to just type
+
+  ${commandInitiator}open
+
+to open the door!
 `;
 
 module.exports = {
-  commands,
+  commands: [
+    'store',
+    's'
+  ],
   help,
   trigger({ params }, { from }) {
     const [actionString, property, value] = params;
