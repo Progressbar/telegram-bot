@@ -1,11 +1,34 @@
 const http = require('http');
+const { commandInitiator } = require('./../env');
 const { store } = require('./store');
 
+const commands = [
+  'open',
+  'o',
+];
+const help = `
+  opens the door with a supplied token
+
+  syntax: ${commandInitiator}open [<token>]
+
+  example: open with your token
+    
+    ${commandInitiator}open myToken
+
+  example: open with stored token
+
+    before opening, store your token:
+
+      ${commandInitiator}store set token myToken
+
+    now you'll be able to use your token anytime!
+
+      ${commandInitiator}open
+`;
+
 module.exports = {
-  commands: [
-    'o',
-    'open',
-  ],
+  commands,
+  help,
   trigger({ params }, { from }, { reply }) {
     const [token] = params;
 
