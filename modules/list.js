@@ -4,11 +4,12 @@ const botModules = require('./index.js');
 module.exports = {
   commands: [
     'list',
-    'l',
+    'start',
+    'l'
   ],
   help: 'prints a list of commands',
   trigger() {
-    return botModules.map(({ commands: [mainCommand] }) => 
+    return botModules.map(({ commands: [mainCommand] }) =>
       `${commandInitiator}${mainCommand}`
     ).join(`\n`);
   },
