@@ -1,4 +1,43 @@
+const fs = require('fs');
+
+const { basePath } = require('./../../env');
+
+const storePath = `${basePath}/store.db`;
+
 const data = {};
+const putData = () => {
+  fs.writeFile(storePath, JSON.stringify(data), (err) => {
+    if (err) {
+      console.error('something went wrong when writing to store.db');
+    }
+  });
+};
+
+const fetchData = () => {
+  fs.stat(storePath, (notExists) => {
+    if (notExists) {
+      putData();
+      return;
+    }
+
+    fs.readFile(storePath, 'utf-8', (err, fileData) => {
+      if (err) {
+        console.error('could not read from store.db');
+        return;
+      }
+
+      // maintain a shallow reference
+      const newData = JSON.parse(fileData);
+      Object.keys(data).forEach((key) => {
+        delete data[key];
+      });
+      Object.entries(newData).forEach(([key, value]) => {
+        data[key] = value;
+      });
+    });
+  });
+};
+fetchData();
 
 module.exports = {
   set({ user, property, value }) {
@@ -7,9 +46,11 @@ module.exports = {
     }
 
     data[user][property] = value;
+
+    putData();
     return {
       msgOutput: 'OK: The data is being stored :D',
-      success: true
+      success: true,
     };
   },
   get({ user, property }) {
@@ -49,9 +90,14 @@ module.exports = {
     }
 
     delete data[user][property];
+    putData();
+
     return {
       msgOutput: 'OK: We\'ve deleted that property for you :D',
       success: true,
     };
+  },
+  fetch() {
+    fetchData();
   },
 };
