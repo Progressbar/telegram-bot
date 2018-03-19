@@ -1,6 +1,7 @@
 # custom
 env.js
 store.db
+logs.log
 
 # Logs
 logs
