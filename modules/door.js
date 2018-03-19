@@ -1,6 +1,7 @@
 const http = require('http');
 const { commandInitiator } = require('./../env');
 const { store } = require('./store');
+const log = require('./../logger');
 
 const commands = [
   'open',
@@ -26,6 +27,13 @@ const help = `
       ${commandInitiator}open
 `;
 
+const logOpen = ({ from }) => {
+  log(`door: id "${from.id}" with info "${from.first_name}|${from.last_name}|${from.username}" opened door succesfully`);
+};
+const logUnsuccessfulOpen = ({ from }) => {
+  log(`door: id "${from.id}" with info "${from.first_name}|${from.last_name}|${from.username}" attempted to open door unsuccesfully`);
+};
+
 module.exports = {
   commands,
   help,
@@ -44,7 +52,15 @@ module.exports = {
         let rawData = '';
         res.on('data', (chunk) => { rawData += chunk; });
         res.on('end', () => {
+          if (rawData.startsWith('OK')) {
+            store.set({ user: from.id, property: 'token', value: token });
+            reply('Doors are opening in ~14s :D We also set your token, so in the future you can just type "o" and it will use this token :)');
+            logOpen({ from });
+            return;
+          }
+
           reply(rawData);
+          logUnsuccessfulOpen({ from });
         });
       });
 
@@ -64,7 +80,13 @@ module.exports = {
         let rawData = '';
         res.on('data', (chunk) => { rawData += chunk; });
         res.on('end', () => {
+          if (rawData.startsWith('OK')) {
+            reply('Doors are being opened with the token you stored :) It will take ~14s');
+            logOpen({ from });
+            return;
+          }
           reply(rawData);
+          logUnsuccessfulOpen({ from });
         });
       });
 

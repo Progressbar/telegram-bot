@@ -2,6 +2,7 @@ const Telegraf = require('telegraf');
 const { telegrafBotToken } = require('./env');
 const { extractCommand, findBotModule } = require('./command-helpers');
 const botModules = require('./modules');
+const log = require('./logger');
 
 const bot = new Telegraf(telegrafBotToken);
 
@@ -25,3 +26,4 @@ bot.on('text', (ctx, next) => {
 });
 
 bot.startPolling();
+log('app: started');
