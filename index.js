@@ -5,6 +5,7 @@ const botModules = require('./modules');
 
 const bot = new Telegraf(telegrafBotToken);
 
+bot.use(Telegraf.log());
 
 bot.on('text', (ctx, next) => {
   const msg = ctx.message.text;
