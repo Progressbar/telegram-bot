@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const { basePath } = require('./../../env');
+const { basePath, encodeBasic, decodeBasic } = require('./../../env');
 
 const storePath = `${basePath}/store.db`;
 
@@ -45,7 +45,7 @@ module.exports = {
       data[user] = {};
     }
 
-    data[user][property] = value;
+    data[user][property] = encodeBasic(value);
 
     putData();
     return {
@@ -61,7 +61,7 @@ module.exports = {
       };
     }
 
-    const value = data[user][property];
+    const value = decodeBasic(data[user][property]);
     if (!value) {
       return {
         msgOutput: 'ERROR: Can\'t find that property in here :/',
