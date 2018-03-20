@@ -2,10 +2,9 @@ const Telegraf = require('telegraf');
 const { telegrafBotToken } = require('./env');
 const { extractCommand, findBotModule } = require('./command-helpers');
 const botModules = require('./commands');
+const log = require('./logger');
 
 const bot = new Telegraf(telegrafBotToken);
-
-bot.use(Telegraf.log());
 
 const triggerReply = (ctx, output) => {
   const { text, markup, isMarkdown } = output;
@@ -40,3 +39,4 @@ bot.on('text', (ctx, next) => {
 });
 
 bot.startPolling();
+log('app: started');
