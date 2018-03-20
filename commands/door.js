@@ -2,6 +2,8 @@ const http = require('http');
 const { commandInitiator } = require('./../env');
 const { store } = require('./store');
 
+const { openButton } = require('./../custom-markup');
+
 const commands = [
   'open',
   'o',
@@ -29,7 +31,7 @@ const help = `
 module.exports = {
   commands,
   help,
-  trigger({ params }, { from }, { reply }) {
+  trigger({ params }, { message: { from } }, send) {
     const [token] = params;
 
     if (token) {
@@ -37,14 +39,19 @@ module.exports = {
         const { statusCode } = res;
         if (statusCode !== 200) {
           console.error('doors.js', statusCode);
-          reply('ERROR: something went wrong on the inside :/ Please contact @towc0');
+          send({
+            text: 'ERROR: something went wrong on the inside :/ Please contact @towc0',
+          });
           return;
         }
 
         let rawData = '';
         res.on('data', (chunk) => { rawData += chunk; });
         res.on('end', () => {
-          reply(rawData);
+          send({
+            text: rawData,
+            markup: rawData.startsWith('OK') ? openButton : false,
+          });
         });
       });
 
@@ -57,20 +64,27 @@ module.exports = {
         const { statusCode } = res;
         if (statusCode !== 200) {
           console.error('doors.js', statusCode);
-          reply('ERROR: something went wrong on the inside :/ Please contact @towc0');
+          send({
+            text: 'ERROR: something went wrong on the inside :/ Please contact @towc0',
+          });
           return;
         }
 
         let rawData = '';
         res.on('data', (chunk) => { rawData += chunk; });
         res.on('end', () => {
-          reply(rawData);
+          send({
+            text: rawData,
+            markup: rawData.startsWith('OK') ? openButton : false,
+          });
         });
       });
 
       return false;
     }
 
-    return 'Can\'t find your token. Try `/o <token>` or register with `/store set token <token>` :/';
+    return {
+      text: 'Can\'t find your token. Try `/o <token>` or register with `/store set token <token>` :/',
+    };
   },
 };

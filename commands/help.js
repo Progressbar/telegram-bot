@@ -13,9 +13,13 @@ module.exports = {
 
     const codeDelimiter = '\n```\n';
     if (botModule) {
-      return `${codeDelimiter}${botModule.commands.join(', ')}\n${botModule.help.trim()}${codeDelimiter}`;
+      return {
+        text: `${codeDelimiter}${botModule.commands.join(', ')}\n${botModule.help.trim()}${codeDelimiter}`,
+      };
     }
 
-    return `help: that command doesn't seem to exist. Maybe try \`${commandInitiator}list\` to list all commands`;
+    return {
+      text: `help: that command doesn't seem to exist. Maybe try \`${commandInitiator}list\` to list all commands`,
+    };
   },
 };
