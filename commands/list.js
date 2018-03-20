@@ -5,12 +5,12 @@ module.exports = {
   commands: [
     'list',
     'start',
-    'l'
+    'l',
   ],
   help: 'prints a list of commands',
   trigger() {
-    return botModules.map(({ commands: [mainCommand] }) =>
-      `${commandInitiator}${mainCommand}`
-    ).join(`\n`);
+    return {
+      text: botModules.map(({ commands: [mainCommand] }) => `${commandInitiator}${mainCommand}`).join('\n'),
+    };
   },
 };

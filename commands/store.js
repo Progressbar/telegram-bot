@@ -1,5 +1,5 @@
-const store = require('./store');
-const { commandInitiator } = require('./../../env');
+const store = require('./../store');
+const { commandInitiator } = require('./../env');
 
 const commands = [
   'store',
@@ -41,16 +41,15 @@ to open the door!
 `;
 
 module.exports = {
-  commands: [
-    'store',
-    's'
-  ],
+  commands,
   help,
-  trigger({ params }, { from }) {
+  trigger({ params }, { message: { from } }) {
     const [actionString, property, value] = params;
 
     if (!actionString || !property) {
-      return 'Uhm, check your syntax: `help store`';
+      return {
+        text: `Uhm, check your syntax:\n${this.help}`,
+      };
     }
 
     const actionStringLowercase = actionString.toLowerCase();
@@ -58,9 +57,13 @@ module.exports = {
     const action = actions.find(({ commands: actionCommands }) => actionCommands.includes(actionStringLowercase));
 
     if (action) {
-      return action.fn({ user: from.id, property, value }).msgOutput;
+      return {
+        text: action.fn({ user: from.id, property, value }).msgOutput,
+      };
     }
-    return 'store: couldn\'t find your action :/';
+    return {
+      text: 'store: couldn\'t find your action :/',
+    };
   },
   store,
 };
