@@ -1,4 +1,4 @@
-const { commandInitiator = '/' } = require('./env');
+const { commandInitiator = '/' } = require('./../env');
 
 const removeInitiatorIfPresent = (command, isPresent) => {
   if (isPresent) {
@@ -7,7 +7,7 @@ const removeInitiatorIfPresent = (command, isPresent) => {
   return command;
 };
 
-const extractCommand = (msg) => {
+const extractCommandSyntax = (msg) => {
   const [unfilteredCommand, ...params] = msg.split(' ');
   const hasInitiator = unfilteredCommand.startsWith(commandInitiator);
 
@@ -21,10 +21,21 @@ const extractCommand = (msg) => {
   };
 };
 
-const findBotModule = (botModules, { command, hasInitiator }) => botModules.find(({ commands, initiatorOnly }) => commands.includes(command) && (initiatorOnly ? hasInitiator : true));
+const commandMatches = ({ triggers, initiatorOnly }, { command, hasInitiator }) => {
+  if (triggers.includes(command)) {
+    if (initiatorOnly) {
+      return hasInitiator;
+    }
+    return true;
+  }
+  return false;
+};
+
+const findCommand = (commands, extractedCommand) =>
+  commands.find(command => commandMatches(command, extractedCommand));
 
 module.exports = {
   removeInitiatorIfPresent,
-  extractCommand,
-  findBotModule,
+  extractCommandSyntax,
+  findCommand,
 };

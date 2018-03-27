@@ -1,16 +1,16 @@
 const { commandInitiator } = require('./../env');
-const botModules = require('./index.js');
+const commands = require('./index.js');
 
 module.exports = {
-  commands: [
+  triggers: [
     'list',
     'start',
     'l',
   ],
   help: 'prints a list of commands',
-  trigger() {
+  invoke() {
     return {
-      text: botModules.map(({ commands: [mainCommand] }) => `${commandInitiator}${mainCommand}`).join('\n'),
+      text: commands.map(({ triggers: [mainTrigger] }) => `${commandInitiator}${mainTrigger}`).join('\n'),
     };
   },
 };

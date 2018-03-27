@@ -1,8 +1,12 @@
 const Telegraf = require('telegraf');
 const { telegrafBotToken } = require('./env');
-const { extractCommand, findBotModule } = require('./command-helpers');
-const botModules = require('./commands');
-const log = require('./logger');
+
+const {
+  log,
+  commandHelpers: { extractCommandSyntax, findCommand },
+} = require('./modules');
+
+const commands = require('./commands');
 
 const bot = new Telegraf(telegrafBotToken);
 
@@ -22,13 +26,13 @@ const triggerReply = (ctx, output) => {
 
 bot.on('text', (ctx, next) => {
   const msg = ctx.message.text;
-  const extractedCommand = extractCommand(msg);
+  const commandSyntax = extractCommandSyntax(msg);
 
-  const botModule = findBotModule(botModules, extractedCommand);
+  const command = findCommand(commands, commandSyntax);
 
-  if (botModule) {
+  if (command) {
     const localTriggerReply = output => triggerReply(ctx, output);
-    const output = botModule.trigger(extractedCommand, ctx, localTriggerReply);
+    const output = command.invoke(commandSyntax, ctx, localTriggerReply);
 
     if (output) {
       localTriggerReply(output);

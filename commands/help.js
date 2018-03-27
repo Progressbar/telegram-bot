@@ -1,25 +1,28 @@
 const { commandInitiator } = require('./../env');
-const botModules = require('./index.js');
-const { findBotModule, extractCommand } = require('./../command-helpers');
+const commands = require('./index.js');
+const {
+  commandHelpers: { findCommand, extractCommandSyntax },
+} = require('./../modules');
 
 module.exports = {
-  commands: [
+  triggers: [
     'help',
     'h',
     '?',
   ],
-  trigger({ params }) {
-    const botModule = findBotModule(botModules, extractCommand(params.join(' ')));
+  invoke({ params }) {
+    const command = findCommand(commands, extractCommandSyntax(params.join(' ')));
 
     const codeDelimiter = '\n```\n';
-    if (botModule) {
+    if (command) {
       return {
-        text: `${codeDelimiter}${botModule.commands.join(', ')}\n${botModule.help.trim()}${codeDelimiter}`,
+        text: `${codeDelimiter}${command.triggers.join(', ')}\n${command.help.trim()}${codeDelimiter}`,
+        isMarkdown: true,
       };
     }
 
     return {
-      text: `help: that command doesn't seem to exist. Maybe try \`${commandInitiator}list\` to list all commands`,
+      text: `help: that command doesn't seem to exist. Maybe try ${commandInitiator}list to list all commands`,
     };
   },
 };

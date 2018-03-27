@@ -1,21 +1,22 @@
 // hack-alert: module 'help' and 'list' are parsed after declaring the exports
-const botModuleNames = [
+const commandNames = [
   'store',
-  'door',
+  'open',
+  'answer',
 ];
 
-const parseModuleName = (name) => {
+const parseCommandName = (name) => {
   // eslint-disable-next-line global-require, import/no-dynamic-require
-  const botModule = require(`./${name}`);
-  botModule.commands = botModule.commands.map(command => command.toLowerCase());
-  botModule.name = name;
+  const command = require(`./${name}`);
+  command.triggers = command.triggers.map(trigger => trigger.toLowerCase());
+  command.name = name;
 
-  return botModule;
+  return command;
 };
 
-const botModules = botModuleNames.map(parseModuleName);
+const commands = commandNames.map(parseCommandName);
 
-module.exports = botModules;
+module.exports = commands;
 
-botModules.push(parseModuleName('list'));
-botModules.push(parseModuleName('help'));
+commands.push(parseCommandName('list'));
+commands.push(parseCommandName('help'));
