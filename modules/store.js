@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const { basePath, encodeBasic, decodeBasic } = require('./../env');
 
-const storePath = `${basePath}/../store.db`;
+const storePath = `${basePath}/store.db`;
 
 const data = {};
 const putData = () => {
