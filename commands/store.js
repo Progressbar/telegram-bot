@@ -1,32 +1,33 @@
-const store = require('./../store');
+const store = require('./../modules/store');
 const { commandInitiator } = require('./../env');
 
-const commands = [
+const triggers = [
   'store',
   's',
 ];
 
 const actions = [
   {
-    commands: ['s', 'set'],
+    triggers: ['s', 'set'],
     fn: store.set,
     help: `assigns a value to a property in the store.\nsyntax: \`${commandInitiator}store set <property> <value>\``,
   },
   {
-    commands: ['g', 'get'],
+    triggers: ['g', 'get'],
     fn: store.get,
     help: `prints a property from the store.\nsyntax: ${commandInitiator}store get <property>`,
   },
   {
-    commands: ['d', 'del', 'delete'],
+    triggers: ['d', 'del', 'delete'],
     fn: store.delete,
     help: `removes a property from the store.\nsyntax: ${commandInitiator}store delete <property>`,
   },
 ];
 
-const help = `
-${actions.map(({ commands: actionCommands, help: actionHelp }) =>
-    `${actionCommands.join(', ').padEnd(20, ' ')}\n  ${actionHelp.split('\n').join('\n  ')}`
+const codeDelimiter = '\n```\n';
+const help = `${codeDelimiter}
+${actions.map(({ triggers: actionTriggers, help: actionHelp }) =>
+    `${actionTriggers.join(', ').padEnd(20, ' ')}\n  ${actionHelp.split('\n').join('\n  ')}`
   ).join('\n')}
 
 example: to set your token, use:
@@ -38,23 +39,24 @@ and then you'll be able to just type
   ${commandInitiator}open
 
 to open the door!
-`;
+${codeDelimiter}`;
 
 module.exports = {
-  commands,
+  triggers,
   help,
-  trigger({ params }, { message: { from } }) {
+  invoke({ params }, { message: { from } }) {
     const [actionString, property, value] = params;
 
     if (!actionString || !property) {
       return {
         text: `Uhm, check your syntax:\n${this.help}`,
+        isMarkdown: true,
       };
     }
 
     const actionStringLowercase = actionString.toLowerCase();
 
-    const action = actions.find(({ commands: actionCommands }) => actionCommands.includes(actionStringLowercase));
+    const action = actions.find(({ triggers: actionTriggers }) => actionTriggers.includes(actionStringLowercase));
 
     if (action) {
       return {
