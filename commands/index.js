@@ -1,5 +1,6 @@
 // hack-alert: module 'help' and 'list' are parsed after declaring the exports
 const commandNames = [
+  'start',
   'store',
   'open',
   'answer',
