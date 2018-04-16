@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Progressbar/telegram-bot#readme",
   "dependencies": {
+    "eventsource": "^1.0.5",
     "nodemon": "^1.17.2",
     "telegraf": "^3.19.0"
   },

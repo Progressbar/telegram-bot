@@ -1,4 +1,5 @@
 const Telegraf = require('telegraf');
+const EventSource = require('eventsource');
 const { telegrafBotToken } = require('./env');
 
 const {
@@ -9,6 +10,8 @@ const {
 const commands = require('./commands');
 
 const bot = new Telegraf(telegrafBotToken);
+
+bot.use(Telegraf.log())
 
 const triggerReply = (ctx, output) => {
   const { text, markup, isMarkdown } = output;
@@ -44,3 +47,6 @@ bot.on('text', (ctx, next) => {
 
 bot.startPolling();
 log('app: started');
+
+const publicDoorES = new EventSource('http://door.bar/sse');
+publicDoorES.onmessage = ({ data }) => bot.telegram.sendMessage(-1001320604180, data);

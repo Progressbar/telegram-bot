@@ -4,7 +4,6 @@ const commands = require('./index.js');
 module.exports = {
   triggers: [
     'list',
-    'start',
     'l',
   ],
   help: 'prints a list of commands',
