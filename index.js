@@ -49,4 +49,4 @@ bot.startPolling();
 log('app: started');
 
 const publicDoorES = new EventSource('http://door.bar/sse');
-publicDoorES.onmessage = ({ data }) => bot.telegram.sendMessage(-1001320604180, data);
+publicDoorES.onmessage = ({ data }) => bot.telegram.sendMessage(-1001320604180, JSON.parse(data));
