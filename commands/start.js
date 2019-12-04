@@ -1,7 +1,7 @@
 const getText = () => `
   Welcome to PB's door bot!
 
-  If you don't have a token, contact @towc0 (Matei Copot)
+  If you don't have a token, contact @yangwao
 
   The token you chose is unique to you, which means that you are responsible for whatever that token is used for, so don't share it with anyone!
 

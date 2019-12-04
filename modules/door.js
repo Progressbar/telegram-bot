@@ -81,17 +81,17 @@ const friendlyUseActionFromToken = (action, token, { from }) =>
       const response = {};
       switch (answer) {
         case 'internal':
-          response.text = 'Something went wrong internally :/ Please contact @towc0';
+          response.text = 'Something went wrong internally :/ Please contact @yangwao';
           break;
         case 'invalid token':
-          response.text = 'Looks like your token is not valid :/ It might be a typo. If you can\'t remember it or don\'t think you have one, contact @towc0';
+          response.text = 'Looks like your token is not valid :/ It might be a typo. If you can\'t remember it or don\'t think you have one, contact @yangwao';
           response.markup = emptyKeyboard;
           break;
         case 'debounced':
           response.text = 'Someone is opening the door right now :) If it doesn\'t, try again in a couple of seconds';
           break;
         default:
-          response.text = 'Some unknown error happened. Please tell @towc0 so he can figure it out';
+          response.text = 'Some unknown error happened. Please tell @yangwao so he can figure it out';
           log(`error-unknown: ${answer}`);
       }
 
